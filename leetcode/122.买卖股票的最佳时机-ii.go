@@ -57,14 +57,32 @@
  */
 
 // @lc code=start
+import "fmt"
 func maxProfit(prices []int) int {
-		max :=0 
-		for i := 1; i < len(prices); i++ {
-			if prices[i - 1] < prices[i] {
-				max += prices[i] - prices[i - 1]
+	if len(prices) < 2 {
+		return 0
+	}
+	dptable := map[string]int{}
+	for i := 1; i < len(prices); i++ {
+		for k :=2; k > 0; k-- {
+			dptable[strconv.Itoa(i)+"-0-0"] = 0
+			if i == 0 {
+				dptable["0-"+strconv.Itoa(k)+"-0"] = 0
+				dptable["0-"+strconv.Itoa(k)+"-1"] = -prices[i]
+			} else {
+				dptable[strconv.Itoa(i)+strconv.Itoa(k)+"-0"] = max(dptable[strconv.Itoa(i - 1)+strconv.Itoa(k)+"-0"], dptable[strconv.Itoa(i-1)+strconv.Itoa(k)+"-1"] + prices[i])
+				dptable[strconv.Itoa(i)+strconv.Itoa(k)+"-1"] = max(dptable[strconv.Itoa(i - 1)+strconv.Itoa(k)+"-1"], dptable[strconv.Itoa(i-1)+strconv.Itoa(k-1)+"-0"] - prices[i])
+				fmt.Println(dptable[strconv.Itoa(i)+strconv.Itoa(k)+"-1"])
 			}
 		}
-		return max
+	}
+	return dptable[strconv.Itoa(len(prices) - 1) + "-2-1"]
+}
+func max(x, y int) int {
+	if x > y {
+		return x
+	}
+	return y
 }
 // @lc code=end
 

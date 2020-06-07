@@ -38,41 +38,37 @@
 
 // @lc code=start
 type solution struct {
-	max int
 	amount int
 	coins []int
+	dpMap map[int]int
 }
 
 func coinChange(coins []int, amount int) int {
 	s := newSolution(coins, amount)
-	s.DFS(0, len(coins) - 1, 0)
-	return s.max
+	return s.dp(amount)
 }
 func newSolution(coins []int, amount int) *solution {
-	sort.Ints(coins)
-	return &solution{ -1, amount, coins }
+	// sort.Ints(coins)
+	return &solution{ amount, coins, map[int]int{} }
 }
-func (s *solution) DFS(currVal ,index, currCount int) {
-	if s.amount == currVal {
-		if currCount < s.max || s.max < 0 {
-			s.max = currCount
-			return
-		}
-	} else if currVal > s.amount {
-		return
+func (s *solution) dp(currVal int) int {
+	if currVal == 0 {
+		return 0
+	} else if currVal < 0 {
+		return -1
 	}
-	for i := index; i >=0; i-- {
-		if currVal + s.coins[i] > s.amount {
-			continue
-		}
-		if s.max > 0 && (s.amount - currVal) / s.coins[i] > s.max - currCount {
-			break
-		}
-		currVal += s.coins[i]
-		s.DFS(currVal, i, currCount + 1)
-		currVal -= s.coins[i]
+	if v, ok := s.dpMap[currVal]; ok {
+		return v
 	}
-	return
+	min := -2
+	for _, v := range s.coins {
+		res := s.dp(currVal - v)
+		if res >= 0 && (res < min|| min == -2) {
+			min = res 
+		}
+	}
+	s.dpMap[currVal] = min + 1
+	return min + 1
 }
 // @lc code=end
 
