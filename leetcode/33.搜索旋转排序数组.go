@@ -40,22 +40,25 @@
 func search(nums []int, target int) int {
 	l, r := 0, len(nums) - 1
 	for l <= r {
-		half := l + (l + r) / 2
-		if target <= nums[half] {
-			if target < nums[l] {
-				return -1
-			} else {
-				r = half
-			}
-		} else {
-			if nums[r] < target {
-				return -1
+		half := l + (r - l) / 2
+		if nums[half] == target {
+			return half
+		}
+		if nums[l] <= nums[half] {
+			if target < nums[half] && target >= nums[l] {
+				r = half - 1
 			} else {
 				l = half + 1
 			}
+		} else {
+			if target > nums[half] && target <= nums[r] {
+				l = half + 1
+			} else {
+				r = half - 1
+			}
 		}
 	}
-	return nums[l]
+	return -1
 }
 // @lc code=end
 
