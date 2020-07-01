@@ -45,27 +45,48 @@
 
 // @lc code=start
 func calculate(s string) int {
-	stack = make([]int, 0)
-	flag = '+'
+	index := 0
+	ret := calHelper(s, &index)
+	return ret
+}
+
+func calHelper (s string, i *int) int {
+	stack := make([]int,0)
+	sgin := '+'
 	num := 0
-	for i := len(s) - 1; i >= 0; i-- {
-		if v == '+' {
+	for ;*i < len(s);*i++ {
+		if  unicode.IsDigit(rune(s[*i])) {
+			num = 10 * num + (int(s[*i]) - '0')
+		}
+		if s[*i] == '(' {
+			*i++
+			num = calHelper(s, i)
+			*i++
+		}
+		if (!unicode.IsDigit(rune(s[*i])) && rune(s[*i]) != ' ') || len(s) <= *i + 1 {
+			if sgin == '+' {
+				stack = append(stack, num)
+			} else if sgin == '-' {
+				stack = append(stack, -num)
+			} else if sgin == '*' {
+				pre := stack[len(stack) - 1]
+				stack[len(stack) - 1] = pre * num
+			} else if sgin == '/' {
+				pre := stack[len(stack) - 1]
+				stack[len(stack) - 1] = pre / num
+			}
+			if s[*i] == ')' {
+				break
+			}
 			num = 0
-			flag = '+'
-		} else if v == '-' {
-			num = 0
-			flag = '-'
-		} else if v == ' ' {
-			num = 0
-		}  else if v == '*' {
-			pre := stack[len(stack) - 1]
-			
-		} else if v == '/' {
-			num = 0
-		}else {
-			num = 10 * num + strconv.Atoi(v)
+			sgin = rune(s[*i])
 		}
 	}
+	ret := 0
+	for _,v := range stack {
+		ret += v
+	}
+	return ret
 }
 // @lc code=end
 
