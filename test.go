@@ -1,14 +1,48 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
 
+var x int64
+// var wg sync.WaitGroup
+// var lock sync.Mutex
+
+// func add() {
+
+// 	fmt.Println("before", x)
+//     for i := 0; i < 4000; i++ {
+// 				lock.Lock()
+// 				x = x + 1
+// 				lock.Unlock()
+// 		}
+// 		fmt.Println("end", x)
+//     wg.Done()
+// }
+// func main() {
+//     wg.Add(2)
+//     go add()
+//     go add()
+//     wg.Wait()
+//     fmt.Println(x)
+// }
+
+var wg sync.WaitGroup
+var lock sync.Mutex
+
+func add() {
+    for i := 0; i < 5000; i++ {
+        lock.Lock() // 加锁
+        x = x + 1
+        lock.Unlock() // 解锁
+    }
+    wg.Done()
+}
 func main() {
-    channel := make(chan int, 5)
-    channel <- 5
-    channel <- 3
-    channel <- 9
-		defer close(channel)
-    for element := range channel {
-        fmt.Println(element)
-		}
+    wg.Add(2)
+    go add()
+    go add()
+    wg.Wait()
+    fmt.Println(x)
 }
