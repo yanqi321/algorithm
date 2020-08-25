@@ -20,7 +20,7 @@ class Solution {
                 }
             }
         }
-        boolean ret = recursiveSudoku(board, row, col, box, 0, 0);
+        recursiveSudoku(board, row, col, box, 0, 0);
     }
     private boolean recursiveSudoku(char[][] board, boolean[][] row,boolean[][] col, boolean[][] box, int i, int j) {
         if (j == board[0].length) {
@@ -45,10 +45,10 @@ class Solution {
                 box[j / 3 + i / 3 * 3][n] = false;
                 board[i][j] = '.';
             }
+            return false;
         } else {
-            recursiveSudoku(board, row, col, box, i, j + 1);
+            return recursiveSudoku(board, row, col, box, i, j + 1);
         }
-        return false;
     }
 }
 // @lc code=end
