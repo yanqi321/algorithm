@@ -54,6 +54,11 @@ function validDate(checkinDate, checkoutDate) {
   }
 }
 
+function getToDayTimeStart() {
+  const now = new Date();
+  now.set
+}
+
 // TODO: 日期 和 房间数量耦合 如何处理
 function valideRoom() {
 
