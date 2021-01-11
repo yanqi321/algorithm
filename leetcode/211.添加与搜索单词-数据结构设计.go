@@ -35,11 +35,11 @@ func (this *WordDictionary) Search(word string) bool {
 }
 
 func match (wordNode *WordDictionary, word string) bool {
-	if len(wordNode.next) == 0 {
+	if wordNode == nil  {
 		return false
 	}
-	if len(word) == 1 {
-		if word == '.' &&
+	if word == "" {
+		return wordNode.isEnd
 	}
 	if word[0] == '.' {
 		for i := 0; i < 26; i++ {
@@ -47,11 +47,10 @@ func match (wordNode *WordDictionary, word string) bool {
 				return true
 			}
 		}
+		return false
 	}
-	if wordNode.next[word[0] -'a'] != nil && match(wordNode.next[word[0] -'a'] , word[1:]) {
-		return true
-	}
-	return false
+	newNode := wordNode.next[word[0] - 'a']
+	return match(newNode , word[1:])
 }
 
 
