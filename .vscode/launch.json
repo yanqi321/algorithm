@@ -5,15 +5,16 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "java",
-      "name": "java Current",
+      "name": "go file",
+      "type": "go",
       "request": "launch",
-      "mainClass": "${file}"
+      "mode": "debug",
+      "program": "${file}"
     },
     {
+      "name": "node c",
       "type": "node",
       "request": "launch",
-      "name": "node c",
       "skipFiles": [
         "<node_internals>/**"
       ],
