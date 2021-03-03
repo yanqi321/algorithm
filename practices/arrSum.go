@@ -50,9 +50,9 @@ func main() {
         ans := ArrSum(newArr) + sum
         fmt.Println(ans)
     }
-    // arr := []int{3,1,2,3,1}
     
 }
+// ArrSum 计算最多个数合并被3 整除
 func ArrSum(arr []int) int {
     if len(arr) == 1 {
         return 0
@@ -70,8 +70,7 @@ func ArrSum(arr []int) int {
         j--
     }
     if i < j {
-        newArr := append(arr[i+1:j],arr[i] + arr[j])
-        return ans + ArrSum(newArr)
+        return ans + (j -i +1) / 3
     }
     return ans
 }
